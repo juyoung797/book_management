@@ -2,7 +2,6 @@ package com.j797.book_management.repository;
 
 import com.j797.book_management.model.Author;
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,6 +26,18 @@ public class AuthorRepository {
 
         return author;
     }
+
+//    public Author update(Integer id, Author updatedAuthor) {
+//        if (!store.containsKey(id)) {
+//            throw new NoSuchElementException(id + "의 저자가 없습니다");
+//        }
+//
+//        updatedAuthor.setId(id);
+//        store.put(id, updatedAuthor);
+//
+//        return updatedAuthor;
+//    }
+
 
     public void delete(Integer id) {
         store.remove(id);
