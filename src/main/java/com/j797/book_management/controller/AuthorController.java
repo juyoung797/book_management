@@ -1,0 +1,58 @@
+package com.j797.book_management.controller;
+
+import com.j797.book_management.dto.AuthorDto;
+import com.j797.book_management.model.Author;
+import com.j797.book_management.service.AuthorService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/authors")
+@RequiredArgsConstructor
+public class AuthorController {
+    private final AuthorService authorService;
+
+    @GetMapping
+    public List<Author> list() {
+        return authorService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Author get(@PathVariable Integer id) {
+        return authorService.getById(id);
+    }
+
+//    @PostMapping
+//    public Author create(
+//            @Valid @RequestBody AuthorDto authorDto
+//    ) {
+//        Author author = Author.builder()
+//                .name(authorDto.getName())
+//                .build();
+//        return authorService.create(author);
+//    }
+
+
+    @PostMapping
+    public ResponseEntity<Author> create(@Valid @RequestBody AuthorDto authorDto) {
+        Author author = new Author();
+        author.setName(authorDto.getName());
+
+        Author saved = authorService.create(author);
+
+        return ResponseEntity.created(URI.create("/api/authors/" + saved.getId())).body(saved);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(
+           @PathVariable Integer id
+    ) {
+        authorService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
